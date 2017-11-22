@@ -19,6 +19,7 @@ sierra-streams-source is published for Scala 2.11
 ```Scala
 import akka.stream.scaladsl.Sink
 import uk.ac.wellcome.sierra.{SierraSource, ThrottleRate}
+import scala.concurrent.duration._
 
 val sierraSource = SierraSource(
   sierraUrl, 
