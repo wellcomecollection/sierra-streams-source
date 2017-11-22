@@ -47,4 +47,13 @@ scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
+useGpg := true
+
 parallelExecution in Test := false
+
+publishTo := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
+)
