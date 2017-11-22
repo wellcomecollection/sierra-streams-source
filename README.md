@@ -4,6 +4,16 @@ A library for providing Akka Streams from objects in a Sierra API.
 
 [![Build Status](https://travis-ci.org/wellcometrust/sierra-streams-source.svg?branch=master)](https://travis-ci.org/wellcometrust/sierra-streams-source)
 
+## Installation
+
+```scala
+libraryDependencies ++= Seq(
+  "uk.ac.wellcome" %% "sierra-streams-source" % "0.1"
+)
+```
+
+sierra-streams-source is published for Scala 2.11
+
 ## Basic Usage
 
 ```Scala
