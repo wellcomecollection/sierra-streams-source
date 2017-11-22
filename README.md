@@ -1,6 +1,8 @@
 # sierra-streams-source
 
-A library for providing Akka Streams from objects in a Sierra API 
+A library for providing Akka Streams from objects in a Sierra API.
+
+[![Build Status](https://travis-ci.org/wellcometrust/sierra-streams-source.svg?branch=master)](https://travis-ci.org/wellcometrust/sierra-streams-source)
 
 ## Basic Usage
 
