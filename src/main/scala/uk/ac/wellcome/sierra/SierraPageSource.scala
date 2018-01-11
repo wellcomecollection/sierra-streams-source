@@ -54,7 +54,8 @@ private[sierra] class SierraPageSource(apiUrl: String, oauthKey: String, oauthSe
           case 200 => refreshJsonListAndPush(newResponse)
           case 404 => complete(out)
           case 401 => ifUnauthorized
-          case _ => fail(out, new RuntimeException("Unexpected Error"))
+          case code => fail(out, new RuntimeException(
+            s"Unexpected HTTP status code from Sierra: $code"))
         }
       }
 
