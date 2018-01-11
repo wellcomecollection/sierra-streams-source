@@ -7,7 +7,7 @@ import io.circe.optics.JsonPath.root
 import io.circe.parser.parse
 import org.slf4j.{Logger, LoggerFactory}
 
-import scalaj.http.{Http, HttpResponse}
+import scalaj.http.{Http, HttpOptions, HttpResponse}
 
 private[sierra] class SierraPageSource(apiUrl: String, oauthKey: String, oauthSecret: String)(
   resourceType: String,
@@ -97,10 +97,13 @@ private[sierra] class SierraPageSource(apiUrl: String, oauthKey: String, oauthSe
 
     logger.debug(s"Making request with parameters $params & token $token")
 
-    Http(s"$apiUrl/$resourceType")
+    Http(url = s"$apiUrl/$resourceType")
+      .option(HttpOptions.readTimeout(10000))
+      .option(HttpOptions.connTimeout(10000))
       .params(params)
       .header("Authorization", s"Bearer $token")
       .header("Accept", "application/json")
+      .header("Connection", "close")
       .asString
   }
 }
