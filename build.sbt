@@ -6,7 +6,7 @@ name := "sierra-streams-source"
 
 version := "0.1"
 
-scalaVersion := "2.11.8"
+crossScalaVersions := Seq("2.11.11", "2.12.6")
 
 
 val versions = new {
@@ -40,8 +40,6 @@ scalacOptions ++= Seq(
   "-encoding",
   "UTF-8",
   "-Xlint",
-  "-Yclosure-elim",
-  "-Yinline",
   "-Xverify",
   "-feature",
   "-language:postfixOps"
