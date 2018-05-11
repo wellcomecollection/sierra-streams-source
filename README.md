@@ -12,7 +12,7 @@ libraryDependencies ++= Seq(
 )
 ```
 
-sierra-streams-source is published for Scala 2.11
+sierra-streams-source is published for Scala 2.11 and Scala 2.12
 
 ## Basic Usage
 
