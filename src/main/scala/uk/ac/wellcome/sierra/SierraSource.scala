@@ -13,14 +13,22 @@ case object ThrottleRate {
 }
 
 object SierraSource {
-
-
-  def apply(apiUrl: String, oauthKey: String, oauthSecret: String, throttleRate: ThrottleRate)(
+  def apply(
+    apiUrl: String,
+    oauthKey: String,
+    oauthSecret: String,
+    throttleRate: ThrottleRate
+  )(
     resourceType: String,
     params: Map[String, String]): Source[Json, NotUsed] = {
 
     Source.fromGraph(
-      new SierraPageSource(apiUrl, oauthKey, oauthSecret)(resourceType, params)
+      new SierraPageSource(
+        apiUrl = apiUrl,
+        oauthKey = oauthKey,
+        oauthSecret = oauthSecret)(
+          resourceType = resourceType,
+          params = params)
     ).throttle(
       throttleRate.elements,
       throttleRate.per,
@@ -29,12 +37,21 @@ object SierraSource {
     ).mapConcat(identity)
   }
 
-  def apply(apiUrl: String, oauthKey: String, oauthSecret: String)(
+  def apply(
+    apiUrl: String,
+    oauthKey: String,
+    oauthSecret: String
+  )(
     resourceType: String,
     params: Map[String, String]): Source[Json, NotUsed] = {
 
     Source.fromGraph(
-      new SierraPageSource(apiUrl, oauthKey, oauthSecret)(resourceType, params)
+      new SierraPageSource(
+        apiUrl = apiUrl,
+        oauthKey = oauthKey,
+        oauthSecret = oauthSecret)(
+          resourceType = resourceType,
+          params = params)
     ).mapConcat(identity)
   }
 

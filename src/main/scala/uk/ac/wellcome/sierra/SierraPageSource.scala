@@ -9,10 +9,14 @@ import org.slf4j.{Logger, LoggerFactory}
 
 import scalaj.http.{Http, HttpOptions, HttpResponse}
 
-private[sierra] class SierraPageSource(apiUrl: String, oauthKey: String, oauthSecret: String)(
+private[sierra] class SierraPageSource(
+  apiUrl: String,
+  oauthKey: String,
+  oauthSecret: String
+)(
   resourceType: String,
-  params: Map[String, String] = Map.empty)
-    extends GraphStage[SourceShape[List[Json]]] {
+  params: Map[String, String] = Map()
+) extends GraphStage[SourceShape[List[Json]]] {
 
   val out: Outlet[List[Json]] = Outlet("SierraSource")
 
