@@ -12,7 +12,8 @@ import scalaj.http.{Http, HttpOptions, HttpResponse}
 private[sierra] class SierraPageSource(
   apiUrl: String,
   oauthKey: String,
-  oauthSecret: String
+  oauthSecret: String,
+  timeoutMs: Int
 )(
   resourceType: String,
   params: Map[String, String] = Map()
@@ -102,8 +103,8 @@ private[sierra] class SierraPageSource(
     logger.debug(s"Making request with parameters $params & token $token")
 
     Http(url = s"$apiUrl/$resourceType")
-      .option(HttpOptions.readTimeout(10000))
-      .option(HttpOptions.connTimeout(10000))
+      .option(HttpOptions.readTimeout(timeoutMs))
+      .option(HttpOptions.connTimeout(timeoutMs))
       .params(params)
       .header("Authorization", s"Bearer $token")
       .header("Accept", "application/json")

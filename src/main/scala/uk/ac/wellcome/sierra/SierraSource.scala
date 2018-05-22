@@ -27,7 +27,8 @@ object SierraSource {
       new SierraPageSource(
         apiUrl = apiUrl,
         oauthKey = oauthKey,
-        oauthSecret = oauthSecret)(
+        oauthSecret = oauthSecret,
+        timeoutMs = timeoutMs)(
           resourceType = resourceType,
           params = params)
     )
