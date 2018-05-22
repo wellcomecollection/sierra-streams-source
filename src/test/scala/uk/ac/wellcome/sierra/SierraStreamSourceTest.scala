@@ -88,8 +88,30 @@ class SierraStreamSourceTest
 
       gap shouldBe >(expectedDurationInMillis)
     }
+  }
 
+  it("respects the specified timeout parameter") {
+    stubFor(
+      get(urlMatching("/bibs")).willReturn(
+        aResponse()
+          .withStatus(200)
+          .withFixedDelay(5000)
+      )
+    )
 
+    val source = SierraSource(
+      apiUrl = sierraWireMockUrl,
+      oauthKey = oauthKey,
+      oauthSecret = oauthSecret,
+      timeoutMs = 2000
+    )("bibs", Map.empty)
+
+    val future = source.take(1).runWith(Sink.head[Json])
+
+    whenReady(future.failed) { ex =>
+      ex shouldBe a [RuntimeException]
+      ex.getMessage should include ("Timeout")
+    }
   }
 }
 
