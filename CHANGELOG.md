@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.3
+
+This release adds a new `timeoutMs` parameter to `StreamSource`, allowing you
+to choose how long to wait before timing out the connection to Sierra.
+
+This parameter is optional, and defaults to the previous timeout (10000 ms).
+
 ## v0.2 - 2018-01-11
 
 This release sends the "Connection: close" header on every request to Sierra,
