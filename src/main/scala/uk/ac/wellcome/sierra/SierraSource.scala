@@ -13,6 +13,36 @@ case object ThrottleRate {
 }
 
 object SierraSource {
+  private def buildSource(
+    apiUrl: String,
+    oauthKey: String,
+    oauthSecret: String,
+    maybeThrottleRate: Option[ThrottleRate]
+  )(
+    resourceType: String,
+    params: Map[String, String]): Source[Json, NotUsed] = {
+    val source = Source.fromGraph(
+      new SierraPageSource(
+        apiUrl = apiUrl,
+        oauthKey = oauthKey,
+        oauthSecret = oauthSecret)(
+          resourceType = resourceType,
+          params = params)
+    )
+
+    maybeThrottleRate match {
+      case Some(throttleRate) =>
+        source.throttle(
+          throttleRate.elements,
+          throttleRate.per,
+          throttleRate.maximumBurst,
+          ThrottleMode.shaping
+        ).mapConcat(identity)
+      case None => source
+        .mapConcat(identity)
+    }
+  }
+
   def apply(
     apiUrl: String,
     oauthKey: String,
@@ -20,22 +50,16 @@ object SierraSource {
     throttleRate: ThrottleRate
   )(
     resourceType: String,
-    params: Map[String, String]): Source[Json, NotUsed] = {
-
-    Source.fromGraph(
-      new SierraPageSource(
+    params: Map[String, String]): Source[Json, NotUsed] =
+      buildSource(
         apiUrl = apiUrl,
         oauthKey = oauthKey,
-        oauthSecret = oauthSecret)(
-          resourceType = resourceType,
-          params = params)
-    ).throttle(
-      throttleRate.elements,
-      throttleRate.per,
-      throttleRate.maximumBurst,
-      ThrottleMode.shaping
-    ).mapConcat(identity)
-  }
+        oauthSecret = oauthSecret,
+        maybeThrottleRate = Some(throttleRate)
+      )(
+        resourceType = resourceType,
+        params = params
+      )
 
   def apply(
     apiUrl: String,
@@ -43,16 +67,14 @@ object SierraSource {
     oauthSecret: String
   )(
     resourceType: String,
-    params: Map[String, String]): Source[Json, NotUsed] = {
-
-    Source.fromGraph(
-      new SierraPageSource(
+    params: Map[String, String]): Source[Json, NotUsed] =
+      buildSource(
         apiUrl = apiUrl,
         oauthKey = oauthKey,
-        oauthSecret = oauthSecret)(
-          resourceType = resourceType,
-          params = params)
-    ).mapConcat(identity)
-  }
-
+        oauthSecret = oauthSecret,
+        maybeThrottleRate = None
+      )(
+        resourceType = resourceType,
+        params = params
+      )
 }
