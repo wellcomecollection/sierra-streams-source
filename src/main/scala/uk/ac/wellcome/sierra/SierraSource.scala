@@ -17,7 +17,8 @@ object SierraSource {
     apiUrl: String,
     oauthKey: String,
     oauthSecret: String,
-    throttleRate: ThrottleRate = ThrottleRate(elements = 0, per = 0 seconds)
+    throttleRate: ThrottleRate = ThrottleRate(elements = 0, per = 0 seconds),
+    timeoutMs: Int = 10000
   )(
     resourceType: String,
     params: Map[String, String]): Source[Json, NotUsed] = {
