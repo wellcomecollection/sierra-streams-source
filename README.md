@@ -8,11 +8,11 @@ A library for providing Akka Streams from objects in a Sierra API.
 
 ```scala
 libraryDependencies ++= Seq(
-  "uk.ac.wellcome" %% "sierra-streams-source" % "0.1"
+  "uk.ac.wellcome" %% "sierra-streams-source" % "0.3"
 )
 ```
 
-sierra-streams-source is published for Scala 2.11 and Scala 2.12
+sierra-streams-source is published for Scala 2.11 and Scala 2.12.
 
 ## Basic Usage
 
