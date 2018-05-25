@@ -49,12 +49,7 @@ useGpg := true
 
 parallelExecution in Test := false
 
-publishTo := Some(
-  if (isSnapshot.value)
-    Opts.resolver.sonatypeSnapshots
-  else
-    Opts.resolver.sonatypeStaging
-)
-
 pgpPublicRing := file("./pgp-key/pubring.asc")
 pgpSecretRing := file("./pgp-key/secring.asc")
+
+releaseEarlyWith := SonatypePublisher
