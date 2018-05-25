@@ -55,3 +55,6 @@ publishTo := Some(
   else
     Opts.resolver.sonatypeStaging
 )
+
+pgpPublicRing := file("./pgp-key/pubring.asc")
+pgpSecretRing := file("./pgp-key/secring.asc")
