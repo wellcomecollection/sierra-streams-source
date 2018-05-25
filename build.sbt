@@ -52,4 +52,9 @@ parallelExecution in Test := false
 pgpPublicRing := file("./pgp-key/pubring.asc")
 pgpSecretRing := file("./pgp-key/secring.asc")
 
-releaseEarlyWith := SonatypePublisher
+publishTo := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
+)
