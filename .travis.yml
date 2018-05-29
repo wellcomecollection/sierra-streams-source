@@ -10,7 +10,7 @@ branches:
 
 jobs:
   include:
-   - stage: release
+   - stage: release_211
      scala: 2.11.11
      script:
      - openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv -in credentials.sbt.enc -out credentials.sbt -d
@@ -18,7 +18,7 @@ jobs:
      - unzip pgp-key.zip;
      - sbt ++$TRAVIS_SCALA_VERSION publishSigned sonatypeRelease;
 
-   - stage: release
+   - stage: release_212
      scala: 2.12.6
      script:
      - openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv -in credentials.sbt.enc -out credentials.sbt -d
@@ -28,5 +28,7 @@ jobs:
 
 stages:
  - test
- - name: release
+ - name: release_211
+   if: type = pull_request
+ - name: release_212
    if: type = pull_request
