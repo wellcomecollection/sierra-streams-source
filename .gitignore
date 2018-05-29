@@ -3,6 +3,8 @@
 .idea
 target
 
+credentials.sbt
+
 pgp-key
 pgp.sbt
 
