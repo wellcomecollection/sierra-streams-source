@@ -49,8 +49,8 @@ useGpg := true
 
 parallelExecution in Test := false
 
-pgpPublicRing := file("./pgp-key/pubring.asc")
-pgpSecretRing := file("./pgp-key/secring.asc")
+pgpPublicRing in ThisBuild := file("./pgp-key/pubring.asc")
+pgpSecretRing in ThisBuild := file("./pgp-key/secring.asc")
 
 publishTo := Some(
   if (isSnapshot.value)
