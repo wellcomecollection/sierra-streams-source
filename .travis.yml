@@ -29,6 +29,6 @@ jobs:
 stages:
  - test
  - name: release_211
-   if: type = pull_request
+   if: type = push
  - name: release_212
-   if: type = pull_request
+   if: type = push
