@@ -82,13 +82,11 @@ class SierraStreamSourceTest
     val eventualJsonList = sierraSource.runWith(Sink.seq[Json])
     val startTime = Instant.now()
     val expectedDurationInMillis = 1000L
-    val toleranceInMIllis = 100L
 
     whenReady(eventualJsonList) { jsonList =>
       val gap: Long = ChronoUnit.MILLIS.between(startTime, Instant.now())
 
       gap shouldBe >(expectedDurationInMillis)
-      gap shouldBe <(expectedDurationInMillis + toleranceInMIllis)
     }
 
 
