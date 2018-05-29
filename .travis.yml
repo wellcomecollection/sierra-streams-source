@@ -13,15 +13,15 @@ jobs:
    - stage: release
      scala: 2.11.11
      script:
-     - openssl aes-256-cbc -K $encrypted_0f90593c4cb0_key -iv $encrypted_0f90593c4cb0_iv -in pgp-key.zip.enc -out pgp-key.zip -d;
-     - unzip pgp-key.zip;
+     - openssl aes-256-cbc -K $encrypted_0f90593c4cb0_key -iv $encrypted_0f90593c4cb0_iv -in secrets.zip.enc -out secrets.zip -d;
+     - unzip secrets.zip;
      - sbt ++$TRAVIS_SCALA_VERSION publishLocalSigned publishSigned sonatypeRelease;
 
    - stage: release
      scala: 2.12.6
      script:
-     - openssl aes-256-cbc -K $encrypted_0f90593c4cb0_key -iv $encrypted_0f90593c4cb0_iv -in pgp-key.zip.enc -out pgp-key.zip -d;
-     - unzip pgp-key.zip;
+     - openssl aes-256-cbc -K $encrypted_0f90593c4cb0_key -iv $encrypted_0f90593c4cb0_iv -in secrets.zip.enc -out secrets.zip -d;
+     - unzip secrets.zip;
      - sbt ++$TRAVIS_SCALA_VERSION publishLocalSigned publishSigned sonatypeRelease;
 
 stages:

@@ -52,8 +52,6 @@ parallelExecution in Test := false
 pgpPublicRing := baseDirectory.value / "pgp-key" / "pubring.asc"
 pgpSecretRing := baseDirectory.value / "pgp-key" / "secring.asc"
 
-pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
-
 publishTo := Some(
   if (isSnapshot.value)
     Opts.resolver.sonatypeSnapshots
