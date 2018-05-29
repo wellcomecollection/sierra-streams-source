@@ -6,6 +6,4 @@ target
 credentials.sbt
 
 pgp-key
-pgp.sbt
-
-secrets.zip
+pgp-key.zip
