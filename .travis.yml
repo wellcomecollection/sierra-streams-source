@@ -1,21 +1,15 @@
 language: scala
 
+scala:
+- 2.11.11
+- 2.12.6
+
 branches:
   only:
     - master
 
 jobs:
   include:
-   - stage: test
-     scala: 2.11.11
-     script:
-     - sbt ++$TRAVIS_SCALA_VERSION test
-
-   - stage: test
-     scala: 2.12.6
-     script:
-     - sbt ++$TRAVIS_SCALA_VERSION test
-
    - stage: release
      scala: 2.11.11
      script:
