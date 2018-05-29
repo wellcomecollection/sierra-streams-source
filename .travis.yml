@@ -16,7 +16,7 @@ jobs:
      - openssl aes-256-cbc -K $encrypted_83630750896a_key -iv $encrypted_83630750896a_iv -in credentials.sbt.enc -out credentials.sbt -d
      - openssl aes-256-cbc -K $encrypted_0f90593c4cb0_key -iv $encrypted_0f90593c4cb0_iv -in pgp_secrets.zip.enc -out pgp_secrets.zip -d
      - unzip pgp_secrets.zip;
-     - sbt ++$TRAVIS_SCALA_VERSION publishLocalSigned publishSigned sonatypeRelease;
+     - sbt ++$TRAVIS_SCALA_VERSION publishSigned sonatypeRelease;
 
    - stage: release
      scala: 2.12.6
@@ -24,16 +24,9 @@ jobs:
      - openssl aes-256-cbc -K $encrypted_83630750896a_key -iv $encrypted_83630750896a_iv -in credentials.sbt.enc -out credentials.sbt -d
      - openssl aes-256-cbc -K $encrypted_0f90593c4cb0_key -iv $encrypted_0f90593c4cb0_iv -in pgp_secrets.zip.enc -out pgp_secrets.zip -d
      - unzip pgp_secrets.zip;
-     - sbt ++$TRAVIS_SCALA_VERSION publishLocalSigned publishSigned sonatypeRelease;
+     - sbt ++$TRAVIS_SCALA_VERSION publishSigned sonatypeRelease;
 
 stages:
  - test
  - name: release
    if: type = pull_request
-
-env:
-  global:
-  #  Encrypted SONATYPE_USER
-  - secure: Dw66fst5kT2jT++PZZ79n7LyxQWd+KpYpbIzLLjPy5gPPT1+eIrLLctVGHM2ZFyIXisBPd/Emuci8O+/3XtnEa9mV0dp/NSojf7a5q+Q/A/vcG3L1VhfBvg569T8UwMO50Tq7T1Qv9YJ18Xxj+61eBinGsVSlKAl2rm5x2AmwDKKtRI7H8XCpf7slnDPm86TMqOcGIjARQbLiIZHFmLpNy4iT0IIqdubwflhTqAdk/DsOeYqjmAIlTwy0MW2/oLbqXKAmkjW2YpHHS+80IHq/UD/Cvd6ieGtPdOkOEB3Zh/BBoZ/zATPWkK14J8cjqbquKa+cvklaZQf4dtAWhOsXBFI7LG092LKj5CvTTS9Oymyfm6YJoa7llqgbNdaY/KdizXow7OHVgMydSnkyUo0YNFsVcLM0G2VCTo34TjA2CtjmqZndGerWMP6+o2KiV+ojb372/gX7SKcd0qUrTwxqhNfKYsWnrXbe0oKnmATe+zGzEOpKsruAHzJC6vZLy2D9aSdVWnAVUubjHx6bPdH4ztsdiHLsJsmh/V908LwYEE2FJcjeT44JJWEv9c3m3A9eM6kHHhNQBItQL+hPPlT98NPBtVgVhT2k6C5oLmEClu0+7z9AcCIkCpSFOc1hMz5Pdlhs7ly/tPF7QnYYnbj2oiY6T3H9TvfOvrT6e/KbEM=
-  #  Encrypted SONATYPE_PASSWORD
-  - secure: 1p4JI7QDHPKm1+Imj30V0nBYam+0RkTUD6lT4hkQulte0QSY0fyNjH/Cbl0TV8DkyVbuWZc2kIwbqMDjEP5G08YcXiyC5Mz5jsCIEtoDuJ7Qc5FZ+PyVyBUzuHspBhm+B+spvQ0I2b4uirKPOlQNLxy/U3oGOm78NmeXL2mK7VU6iWDzoPNU4hoaN/fCpSpNC6bzvjHqD1R23x0HcW9aSiCP/vZCp2awRbXRhZppNJSIuQgG4FWG/A+m6yP8a4madCSDAX4u+qeTqwGa945yd+muY6V+h/+DPkbV+lsyEd7AnL6mNm1NkoKGPKiMqM0rFnvlmWG/1oBfROrLUcYo+/pckUMXDO7Abvwn49TPhZ3OKbJIZoKIFXDhO/f5bgsUhKdOwkU3DpMQ0AEnlOiEEq80KvqOkFoYwYNANkP35mOCS4auhzFiHETmImcIaRDZ4jC1y8o5L6C45kXX4wysB4hq6wEoHSvkf9skFv1jRDzDvihOe0A9vj/Tw57+P1mUFPKgQFRgTqZ8CLHueDDx6KfzxuUdY0RmECA0I24nfJMgQypoPcoHRIIgM+rPAv2TZ7mx6DkZw1XB4gaAWsPmLDqgZspP2Bhn332bqPTNcucK0M3ji9K4ugR7I4Dzo2F6uVo7VxiPh84ShVBYBc5Mz2xJWOf5ivNCGOKxELMFPko=
