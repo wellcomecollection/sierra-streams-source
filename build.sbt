@@ -45,7 +45,7 @@ scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
-useGpg := true
+useGpg := false
 
 parallelExecution in Test := false
 
