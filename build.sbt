@@ -4,7 +4,7 @@ organization := "uk.ac.wellcome"
 
 name := "sierra-streams-source"
 
-version := "0.3"
+version := "0.4"
 
 crossScalaVersions := Seq("2.11.11", "2.12.6")
 

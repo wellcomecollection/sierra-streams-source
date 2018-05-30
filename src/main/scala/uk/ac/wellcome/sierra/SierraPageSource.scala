@@ -9,10 +9,15 @@ import org.slf4j.{Logger, LoggerFactory}
 
 import scalaj.http.{Http, HttpOptions, HttpResponse}
 
-private[sierra] class SierraPageSource(apiUrl: String, oauthKey: String, oauthSecret: String)(
+private[sierra] class SierraPageSource(
+  apiUrl: String,
+  oauthKey: String,
+  oauthSecret: String,
+  timeoutMs: Int
+)(
   resourceType: String,
-  params: Map[String, String] = Map.empty)
-    extends GraphStage[SourceShape[List[Json]]] {
+  params: Map[String, String] = Map()
+) extends GraphStage[SourceShape[List[Json]]] {
 
   val out: Outlet[List[Json]] = Outlet("SierraSource")
 
@@ -98,8 +103,8 @@ private[sierra] class SierraPageSource(apiUrl: String, oauthKey: String, oauthSe
     logger.debug(s"Making request with parameters $params & token $token")
 
     Http(url = s"$apiUrl/$resourceType")
-      .option(HttpOptions.readTimeout(10000))
-      .option(HttpOptions.connTimeout(10000))
+      .option(HttpOptions.readTimeout(timeoutMs))
+      .option(HttpOptions.connTimeout(timeoutMs))
       .params(params)
       .header("Authorization", s"Bearer $token")
       .header("Accept", "application/json")

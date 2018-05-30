@@ -1,5 +1,6 @@
 package uk.ac.wellcome.sierra
 
+import java.net.SocketTimeoutException
 import java.time.temporal.ChronoUnit
 import java.time.Instant
 
@@ -88,8 +89,31 @@ class SierraStreamSourceTest
 
       gap shouldBe >(expectedDurationInMillis)
     }
+  }
 
+  it("respects the specified timeout parameter") {
+    // The default timeout is 10000 ms, so with default settings we'd
+    // expect to get a 200 OK for this response.
+    stubFor(
+      get(urlMatching("/bibs")).willReturn(
+        aResponse()
+          .withStatus(200)
+          .withFixedDelay(5000)
+      )
+    )
 
+    val source = SierraSource(
+      apiUrl = sierraWireMockUrl,
+      oauthKey = oauthKey,
+      oauthSecret = oauthSecret,
+      timeoutMs = 200
+    )("bibs", Map.empty)
+
+    val future = source.take(1).runWith(Sink.head[Json])
+
+    whenReady(future.failed) { ex =>
+      ex shouldBe a [SocketTimeoutException]
+    }
   }
 }
 
