@@ -8,7 +8,7 @@ A library for providing Akka Streams from objects in a Sierra API.
 
 ```scala
 libraryDependencies ++= Seq(
-  "uk.ac.wellcome" %% "sierra-streams-source" % "0.3"
+  "uk.ac.wellcome" %% "sierra-streams-source" % "0.4"
 )
 ```
 
