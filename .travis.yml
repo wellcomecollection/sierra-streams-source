@@ -1,4 +1,34 @@
 language: scala
+
 scala:
-   - 2.11.11
-   - 2.12.6
+- 2.11.11
+- 2.12.6
+
+branches:
+  only:
+    - master
+
+jobs:
+  include:
+   - stage: release_211
+     scala: 2.11.11
+     script:
+     - openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv -in credentials.sbt.enc -out credentials.sbt -d
+     - openssl aes-256-cbc -K $encrypted_0f90593c4cb0_key -iv $encrypted_0f90593c4cb0_iv -in pgp-key.zip.enc -out pgp-key.zip -d
+     - unzip pgp-key.zip;
+     - sbt ++$TRAVIS_SCALA_VERSION publishSigned sonatypeRelease;
+
+   - stage: release_212
+     scala: 2.12.6
+     script:
+     - openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv -in credentials.sbt.enc -out credentials.sbt -d
+     - openssl aes-256-cbc -K $encrypted_0f90593c4cb0_key -iv $encrypted_0f90593c4cb0_iv -in pgp-key.zip.enc -out pgp-key.zip -d
+     - unzip pgp-key.zip;
+     - sbt ++$TRAVIS_SCALA_VERSION publishSigned sonatypeRelease;
+
+stages:
+ - test
+ - name: release_211
+   if: type = push
+ - name: release_212
+   if: type = push

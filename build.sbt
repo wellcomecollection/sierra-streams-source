@@ -4,7 +4,7 @@ organization := "uk.ac.wellcome"
 
 name := "sierra-streams-source"
 
-version := "0.1"
+version := "0.3"
 
 crossScalaVersions := Seq("2.11.11", "2.12.6")
 
@@ -45,9 +45,12 @@ scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
-useGpg := true
+useGpg := false
 
 parallelExecution in Test := false
+
+pgpPublicRing := baseDirectory.value / "pgp-key" / "pubring.asc"
+pgpSecretRing := baseDirectory.value / "pgp-key" / "secring.asc"
 
 publishTo := Some(
   if (isSnapshot.value)

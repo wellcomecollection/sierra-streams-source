@@ -2,3 +2,8 @@
 *.log
 .idea
 target
+
+credentials.sbt
+
+pgp-key
+pgp-key.zip
