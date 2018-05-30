@@ -1,4 +1,5 @@
 import sbt.Resolver
+import sbtrelease.Version.Bump
 
 organization := "uk.ac.wellcome"
 
@@ -43,6 +44,28 @@ scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
+def versionFmt(out: sbtdynver.GitDescribeOutput): String = {
+  val prefix = out.ref.dropV.value
+  val suffix = out.commitSuffix.mkString("-", "-", "") + out.dirtySuffix.dropPlus.mkString("-", "")
+  if(!suffix.isEmpty) {
+    prefix + suffix + "-SNAPSHOT"
+  }
+  else {
+    prefix
+  }
+}
+
+def fallbackVersion(d: java.util.Date): String = s"HEAD-${sbtdynver.DynVer timestamp d}"
+
+version := dynverGitDescribeOutput.value.mkVersion(versionFmt, fallbackVersion(dynverCurrentDate.value))
+
+publishTo := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
+)
+
 useGpg := false
 
 parallelExecution in Test := false
@@ -50,5 +73,35 @@ parallelExecution in Test := false
 pgpPublicRing := baseDirectory.value / "pgp-key" / "pubring.asc"
 pgpSecretRing := baseDirectory.value / "pgp-key" / "secring.asc"
 
-releaseEarlyWith := SonatypePublisher
-releaseEarlyEnableLocalReleases := true
+import sbtrelease._
+// we hide the existing definition for setReleaseVersion to replace it with our own
+import sbtrelease.ReleaseStateTransformations.{setReleaseVersion=>_,_}
+def setVersionOnly(selectVersion: Versions => String): ReleaseStep =  { st: State =>
+  val vs = st.get(ReleaseKeys.versions).getOrElse(sys.error("No versions are set! Was this release part executed before inquireVersions?"))
+  val selected = selectVersion(vs)
+
+  st.log.info("Setting version to '%s'." format selected)
+  val useGlobal =Project.extract(st).get(releaseUseGlobalVersion)
+  val versionStr = (if (useGlobal) globalVersionString else versionString) format selected
+
+  reapply(Seq(
+    if (useGlobal) version in ThisBuild := selected
+    else version := selected
+  ), st)
+}
+
+lazy val setReleaseVersion: ReleaseStep = setVersionOnly(_._1)
+
+releaseVersion := { ver: String =>Version(ver)
+    .map(_.withoutQualifier)
+    .map(_.bump(Bump.Next).string).getOrElse(versionFormatError)
+}
+
+releaseProcess := Seq(
+  checkSnapshotDependencies,
+  inquireVersions,
+  setReleaseVersion,
+  tagRelease,
+  publishArtifacts,
+  pushChanges
+)
