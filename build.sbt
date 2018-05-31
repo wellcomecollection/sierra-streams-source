@@ -61,6 +61,7 @@ parallelExecution in Test := false
 pgpPublicRing := baseDirectory.value / "pgp-key" / "pubring.asc"
 pgpSecretRing := baseDirectory.value / "pgp-key" / "secring.asc"
 
+// Copied from https://blog.byjean.eu/2015/07/10/painless-release-with-sbt.html
 import sbtrelease._
 // we hide the existing definition for setReleaseVersion to replace it with our own
 import sbtrelease.ReleaseStateTransformations.{setReleaseVersion=>_,_}
