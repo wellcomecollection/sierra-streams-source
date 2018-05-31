@@ -45,6 +45,7 @@ scalacOptions ++= Seq(
 )
 
 dynverSonatypeSnapshots in ThisBuild := true
+version in ThisBuild ~= (_.replace('+', '-'))
 
 publishTo := Some(
   if (isSnapshot.value)
