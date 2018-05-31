@@ -10,6 +10,10 @@ branches:
 
 jobs:
   include:
+   - stage: check_commits
+     script:
+     - sbt "show suggestedBump";
+
    - stage: release_211
      scala: 2.11.11
      script:
@@ -28,6 +32,8 @@ jobs:
 
 stages:
  - test
+ - name: check_commits
+   if: type = pull_request
  - name: release_211
    if: type = push
  - name: release_212
