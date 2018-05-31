@@ -44,20 +44,7 @@ scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
-def versionFmt(out: sbtdynver.GitDescribeOutput): String = {
-  val prefix = out.ref.dropV.value
-  val suffix = out.commitSuffix.mkString("-", "-", "") + out.dirtySuffix.dropPlus.mkString("-", "")
-  if(!suffix.isEmpty) {
-    prefix + suffix + "-SNAPSHOT"
-  }
-  else {
-    prefix
-  }
-}
-
-def fallbackVersion(d: java.util.Date): String = s"HEAD-${sbtdynver.DynVer timestamp d}"
-
-version := dynverGitDescribeOutput.value.mkVersion(versionFmt, fallbackVersion(dynverCurrentDate.value))
+dynverSonatypeSnapshots in ThisBuild := true
 
 publishTo := Some(
   if (isSnapshot.value)
