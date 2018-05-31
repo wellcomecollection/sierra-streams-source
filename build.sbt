@@ -1,5 +1,4 @@
 import sbt.Resolver
-import sbtrelease.Version.Bump
 
 organization := "uk.ac.wellcome"
 
@@ -83,7 +82,7 @@ lazy val setReleaseVersion: ReleaseStep = setVersionOnly(_._1)
 
 releaseVersion := { ver: String =>Version(ver)
     .map(_.withoutQualifier)
-    .map(_.bump(Bump.Next).string).getOrElse(versionFormatError)
+    .map(_.bump(releaseVersionBump.value).string).getOrElse(versionFormatError)
 }
 
 releaseProcess := Seq(
