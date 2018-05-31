@@ -80,9 +80,11 @@ def setVersionOnly(selectVersion: Versions => String): ReleaseStep =  { st: Stat
 
 lazy val setReleaseVersion: ReleaseStep = setVersionOnly(_._1)
 
+minorRegexes := List("""\[?minor\]?.*""").map(_.r)
+
 releaseVersion := { ver: String =>Version(ver)
     .map(_.withoutQualifier)
-    .map(_.bump(releaseVersionBump.value).string).getOrElse(versionFormatError)
+    .map(_.bump(suggestedBump.value).string).getOrElse(versionFormatError)
 }
 
 releaseProcess := Seq(
@@ -90,6 +92,6 @@ releaseProcess := Seq(
   inquireVersions,
   setReleaseVersion,
   tagRelease,
-//  publishArtifacts,
-//  pushChanges
+  publishArtifacts,
+  pushChanges
 )
