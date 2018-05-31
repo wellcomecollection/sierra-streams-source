@@ -89,6 +89,6 @@ releaseProcess := Seq(
   inquireVersions,
   setReleaseVersion,
   tagRelease,
-  publishArtifacts,
-  pushChanges
+//  publishArtifacts,
+//  pushChanges
 )
