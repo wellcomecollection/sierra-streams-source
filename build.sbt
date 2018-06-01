@@ -87,13 +87,6 @@ lazy val setReleaseVersion: ReleaseStep = { st: State =>
   ), st)
 }
 
-lazy val pushTag: ReleaseStep = { st: State =>
-  val (_, tag) = Project.extract(st).runTask(releaseTagName, st)
-  st.log.info(s"Pushing tag $tag to origin")
-  releaseStepCommand(s"git push origin $tag")
-  st
-}
-
 // In sbt-autoversion plugin, minor is the default bump
 // strategy as the minorRegexes matches any string.
 // Let's override that so figuring out the next version fails if
@@ -106,5 +99,5 @@ releaseProcess := Seq(
   tagRelease,
   releaseStepCommand("publishSigned"),
   releaseStepCommand("sonatypeRelease"),
-  pushTag
+  releaseStepCommand(s"git push origin --tags")
 )
