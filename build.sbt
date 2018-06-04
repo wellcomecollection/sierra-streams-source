@@ -97,7 +97,7 @@ releaseProcess := Seq(
   checkSnapshotDependencies,
   setReleaseVersion,
   tagRelease,
-//  releaseStepCommand("+publishSigned"),
-//  releaseStepCommand("sonatypeReleaseAll"),
+  releaseStepCommand("+publishSigned"),
+  releaseStepCommand("sonatypeReleaseAll"),
   releaseStepCommand(s"git push ssh-origin --tags")
 )

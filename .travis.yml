@@ -30,4 +30,4 @@ stages:
  - name: check_commits
    if: type = pull_request
  - name: release
-   if: type = pull_request
+   if: type = push
