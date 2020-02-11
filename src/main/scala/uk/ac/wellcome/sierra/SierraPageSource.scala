@@ -10,13 +10,13 @@ import org.slf4j.{Logger, LoggerFactory}
 import scalaj.http.{Http, HttpOptions, HttpResponse}
 
 private[sierra] class SierraPageSource(
-  apiUrl: String,
-  oauthKey: String,
-  oauthSecret: String,
-  timeoutMs: Int
+    apiUrl: String,
+    oauthKey: String,
+    oauthSecret: String,
+    timeoutMs: Int
 )(
-  resourceType: String,
-  params: Map[String, String] = Map()
+    resourceType: String,
+    params: Map[String, String] = Map()
 ) extends GraphStage[SourceShape[List[Json]]] {
 
   val out: Outlet[List[Json]] = Outlet("SierraSource")
@@ -31,11 +31,9 @@ private[sierra] class SierraPageSource(
       var lastId: Option[Int] = None
       var jsonList: List[Json] = Nil
 
-      setHandler(out,
-        new OutHandler {
-          override def onPull(): Unit = makeSierraRequestAndPush()
-        }
-      )
+      setHandler(out, new OutHandler {
+        override def onPull(): Unit = makeSierraRequestAndPush()
+      })
 
       private def makeSierraRequestAndPush(): Unit = {
         val newParams = lastId match {
@@ -44,37 +42,43 @@ private[sierra] class SierraPageSource(
           case None => params
         }
 
-        makeRequestWith(newParams, ifUnauthorized = {
-          token = refreshToken(apiUrl, oauthKey, oauthSecret)
-          makeRequestWith(newParams, ifUnauthorized = {
-            fail(out, new RuntimeException("Unauthorized!"))
-          })
-        })
+        makeRequestWith(
+          newParams,
+          ifUnauthorized = {
+            token = refreshToken(apiUrl, oauthKey, oauthSecret)
+            makeRequestWith(newParams, ifUnauthorized = {
+              fail(out, new RuntimeException("Unauthorized!"))
+            })
+          }
+        )
       }
 
-      private def makeRequestWith[T](newParams: Map[String, String], ifUnauthorized: => Unit): Unit = {
+      private def makeRequestWith[T](newParams: Map[String, String],
+                                     ifUnauthorized: => Unit): Unit = {
         val newResponse = makeRequest(apiUrl, resourceType, token, newParams)
 
         newResponse.code match {
           case 200 => refreshJsonListAndPush(newResponse)
           case 404 => complete(out)
           case 401 => ifUnauthorized
-          case code => fail(out, new RuntimeException(
-            s"Unexpected HTTP status code from Sierra: $code"))
+          case code =>
+            fail(out,
+                 new RuntimeException(
+                   s"Unexpected HTTP status code from Sierra: $code"))
         }
       }
 
-      private def refreshJsonListAndPush(response: HttpResponse[String]): Unit = {
-        val responseJson = parse(response.body).right.getOrElse(
-          throw new RuntimeException("response was not json"))
+      private def refreshJsonListAndPush(
+          response: HttpResponse[String]): Unit = {
+        val responseJson = parse(response.body).right
+          .getOrElse(throw new RuntimeException("response was not json"))
 
         jsonList = root.entries.each.json.getAll(responseJson)
 
         lastId = Some(
           root.id.string
             .getOption(jsonList.last)
-            .getOrElse(
-              throw new RuntimeException("id not found in item"))
+            .getOrElse(throw new RuntimeException("id not found in item"))
             .toInt)
 
         push(out, jsonList)
@@ -87,11 +91,12 @@ private[sierra] class SierraPageSource(
           Http(s"$apiUrl/token").postForm.auth(oauthKey, oauthSecret).asString
         val json = parse(tokenResponse.body).right
           .getOrElse(throw new RuntimeException("response was not json"))
-        root.access_token.string.getOption(json).getOrElse(
-          throw new Exception("Failed to refresh token!")
-        )
+        root.access_token.string
+          .getOption(json)
+          .getOrElse(
+            throw new Exception("Failed to refresh token!")
+          )
       }
-
 
     }
 
