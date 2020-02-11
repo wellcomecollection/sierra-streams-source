@@ -17,7 +17,8 @@ object Dependencies {
 
   val akkaDependencies: Seq[ModuleID] = Seq(
     "com.typesafe.akka" %% "akka-actor" % versions.akka,
-    "com.typesafe.akka" %% "akka-stream" % versions.akka
+    "com.typesafe.akka" %% "akka-stream" % versions.akka,
+    "com.typesafe.akka" %% "akka-stream-testkit" % versions.akka % Test
   )
 
   val circeDependencies = Seq(
@@ -26,16 +27,9 @@ object Dependencies {
   )
 
   val testDependencies = Seq(
+    "com.github.tomakehurst" % "wiremock" % "2.11.0" % Test,
     "org.scalatest" %% "scalatest" % versions.scalatest % Test
   )
 
-  val libraryDependencies = Seq(
-    "com.github.tomakehurst" % "wiremock" % "2.11.0" % Test,
-    "org.scalaj" %% "scalaj-http" % "2.3.0",
-    "org.scalatest" %% "scalatest" % versions.scalatest % Test,
-    "ch.qos.logback" % "logback-classic" % versions.logback,
-    "org.slf4j" % "slf4j-api" % "1.7.25",
-    "com.typesafe.akka" %% "akka-stream" % "2.5.6",
-    "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.6" % Test
-  ) ++ circeDependencies
+  val libraryDependencies = akkaDependencies ++ circeDependencies ++ testDependencies ++ logbackDependencies
 }
