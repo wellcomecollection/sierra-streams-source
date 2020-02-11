@@ -31,5 +31,7 @@ object Dependencies {
     "org.scalatest" %% "scalatest" % versions.scalatest % Test
   )
 
-  val libraryDependencies = akkaDependencies ++ circeDependencies ++ testDependencies ++ logbackDependencies
+  val libraryDependencies = Seq(
+    "org.scalaj" %% "scalaj-http" % "2.3.0"
+  ) ++ akkaDependencies ++ circeDependencies ++ testDependencies ++ logbackDependencies
 }
