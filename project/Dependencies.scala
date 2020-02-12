@@ -23,7 +23,9 @@ object Dependencies {
 
   val circeDependencies = Seq(
     "io.circe" %% "circe-core" % versions.circe,
-    "io.circe" %% "circe-parser" % versions.circe
+    "io.circe" %% "circe-parser" % versions.circe,
+    "io.circe" %% "circe-optics" % versions.circe
+
   )
 
   val testDependencies = Seq(
@@ -31,5 +33,7 @@ object Dependencies {
     "org.scalatest" %% "scalatest" % versions.scalatest % Test
   )
 
-  val libraryDependencies = akkaDependencies ++ circeDependencies ++ testDependencies ++ logbackDependencies
+  val libraryDependencies = Seq(
+    "org.scalaj" %% "scalaj-http" % "2.3.0"
+  ) ++ akkaDependencies ++ circeDependencies ++ testDependencies ++ logbackDependencies
 }
