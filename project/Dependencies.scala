@@ -23,7 +23,9 @@ object Dependencies {
 
   val circeDependencies = Seq(
     "io.circe" %% "circe-core" % versions.circe,
-    "io.circe" %% "circe-parser" % versions.circe
+    "io.circe" %% "circe-parser" % versions.circe,
+    "io.circe" %% "circe-optics" % versions.circe
+
   )
 
   val testDependencies = Seq(
