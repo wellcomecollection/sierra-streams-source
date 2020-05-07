@@ -6,24 +6,25 @@ import java.time.Instant
 
 import scala.concurrent.duration._
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl.Sink
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, get, stubFor, urlMatching}
 import com.github.tomakehurst.wiremock.stubbing.Scenario
 import io.circe.Json
 import io.circe.optics.JsonPath.root
 import org.scalatest.concurrent.{PatienceConfiguration, ScalaFutures}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.time.{Millis, Seconds, Span}
-import org.scalatest.{FunSpec, Matchers}
 
 class SierraStreamSourceTest
-    extends FunSpec
+    extends AnyFunSpec
     with SierraWireMock
     with Matchers
     with ScalaFutures
     with ExtendedPatience {
   implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
+  implicit val materializer = Materializer(system)
 
   it("should read from sierra") {
     val eventualJson = SierraSource(sierraWireMockUrl, oauthKey, oauthSecret)(

@@ -1,3 +1,5 @@
+import java.util.UUID
+
 val projectName = "sierra-streams-source"
 val projectVersion = "1.0.1"
 
