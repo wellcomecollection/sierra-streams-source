@@ -1,7 +1,7 @@
 import java.util.UUID
 
 val projectName = "sierra-streams-source"
-val projectVersion = "1.0.1"
+val projectVersion = "2.0.0"
 
 val settings: Seq[Def.Setting[_]] = Seq(
   scalaVersion := "2.12.6",
